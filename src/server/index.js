@@ -128,7 +128,8 @@ fastify.get('/status', async (request, reply) => {
     const status = {
       uptime: Math.round(world.time),
       protected: process.env.ADMIN_CODE !== undefined ? true : false,
-      connectedUsers: []
+      connectedUsers: [],
+      COMMIT_HASH: process.env.COMMIT_HASH,
     }
     for (const socket of world.network.sockets.values()) {  
       status.connectedUsers.push({
@@ -168,3 +169,16 @@ async function worldNetwork(fastify) {
 }
 
 console.log(`running on port ${port}`)
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('SIGINT signal received.')
+  await fastify.close()
+  process.exit(0)
+})
+
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received.')
+  await fastify.close()
+  process.exit(0)
+})
