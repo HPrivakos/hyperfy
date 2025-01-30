@@ -128,7 +128,8 @@ fastify.get('/status', async (request, reply) => {
     const status = {
       uptime: Math.round(world.time),
       protected: process.env.ADMIN_CODE !== undefined ? true : false,
-      connectedUsers: []
+      connectedUsers: [],
+      COMMIT_HASH: process.env.COMMIT_HASH,
     }
     for (const socket of world.network.sockets.values()) {  
       status.connectedUsers.push({

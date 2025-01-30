@@ -13,6 +13,9 @@ COPY . .
 
 COPY .env.example .env
 
+ARG COMMIT_HASH=local
+ENV COMMIT_HASH=${COMMIT_HASH:-local}
+
 # Expose the port the app runs on
 EXPOSE 3000
 
